@@ -532,39 +532,37 @@ LinkedList* ll_clone(LinkedList* this)
  */
 int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 {
-    int i,j;
+    int i,j,comp;
     int returnAux =-1;
-    Node* auxPNodeI;
-    Node* auxPNodeJ;
 
-    if(this!=NULL)
+    void* auxPelement;
+
+
+    if(this!=NULL&&pFunc!=NULL&&(order==0 || order ==1))
     {
         returnAux=0;
 
         if(ll_len(this)>1)
         {
-
-            for(i=0; i<ll_len(this); i++)
+            for(i=0; i<this->size-1; i++)
             {
-                auxPNodeI=getNode(this,i);
-                for(j=i+1; j<ll_len(this); j++)
+                for(j=i+1; j<this->size; j++)
                 {
-                    auxPNodeJ=getNode(this,j);
-                    pFunc(auxPNodeI->pElement,auxPNodeJ->pElement);
-                    /*if(order==pFunc(auxPNodeI->pElement,auxPNodeJ->pElement))
+                    comp=pFunc(ll_get(this,i),ll_get(this,j));
+                    if(order==1 && comp==1)
                     {
-                        ll_set(this,j,auxPNodeI->pElement);
-                        ll_set(this,i,auxPNodeJ->pElement);
+                        auxPelement=ll_get(this,i);
+                        ll_set(this,i,ll_get(this,j));
+                        ll_set(this,j,auxPelement);
                     }else
                     {
-                        if(order==comp)
+                        if(order==0 && comp==-1)
                         {
-                            auxPNodeK=auxPNodeJ;
-                            ll_set(this,j,auxPNodeI->pElement);
-                            ll_set(this,i,auxPNodeJ->pElement);
-
+                            auxPelement=ll_get(this,j);
+                            ll_set(this,j,ll_get(this,i));
+                            ll_set(this,i,auxPelement);
                         }
-                    }*/
+                    }
                 }
             }
         }
